@@ -1,5 +1,5 @@
 /*
-	Restaurant Signup  api
+	 Signup  api
 	express js
 	mysql database
 */
@@ -14,34 +14,31 @@ console.log('db connected');
 sql.connect();
 /*Signup api*/
 server.post('/Signup',(req,res)=>{
+	/*payload data {username:'user',gmail:'gmail',pass:'pass'}*/
 	/*inserting data to userlog table*/
-	sql.query("insert into userlog (email,restaurant_name,password,address,phone,home_delivery) values(?,?,?,?,?,?)",[req.body.email,req.body.res_name,req.body.password,req.body.address,req.body.phone,req.body.status],(err,msg1)=>{
+	sql.query("insert into user_log(username,gmail,password) values(?,?,?)",[req.body.username,req.body.gmail,req.body.pass],(err,msg1)=>{
 		if(err!=null)
 		{
-			/*if the account already exists*/
-			if(err.sqlMessage=="Duplicate entry '"+req.body.email+"' for key 'userlog.email'"){
+			/*if the username is already taken*/
+			if(err.sqlMessage=="Duplicate entry '"+req.body.username+"' for key 'user_log.username'"){
+				console.log("username already exits ");
+				res.send({message:"username already exits"})
+			}
+			/*if the account exists */
+			else if(err.sqlMessage=="Duplicate entry '"+req.body.gmail+"' for key 'user_log.gmail'")
+			{
+				console.log("account already exists");
 				res.send({message:"account already exists"});
 			}
-			else
-			{
-			console.log(err);
-			}
 		}
+		//the data is inserted into the table
 		else if(msg1.affectedRows==1)
+
 		{
-			/*the data is inserted successfully into the table*/
-			sql.query("select rest_id as id from userlog where email=?",[req.body.email],(err2,msq2)=>
-			{
-				if(err2==null){
-					console.log("account created");
-					/*returning the confirmation with id*/
-					res.send({message:"account created",auth:msq2[0].id});
-				}
-				else{
-					console.log(err2);
-				}
-			});	
-		}	
+			console.log("account created");
+			res.send({message:"account created"});
+		}
+		
 	});
 });
 server.listen(2000,()=>{
