@@ -44,3 +44,6 @@ server.post('/Signup',(req,res)=>{
 		}	
 	});
 });
+server.listen(2000,()=>{
+	console.log('server started');	
+})

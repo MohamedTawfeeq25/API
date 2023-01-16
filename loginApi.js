@@ -41,3 +41,6 @@ server.post('/Login',(req,res)=>{
 		}
 	});
 });
+server.listen(2000,()=>{
+	console.log('server started');	
+})
