@@ -1,5 +1,5 @@
 /*
-	Login page api
+	Login  api
 	express js
 	mysql database
 */
@@ -13,7 +13,6 @@ var sql=mysql.createConnection({host:/*Host Name*/,user:/*username*/,password:/*
 console.log('db connected');
 sql.connect();
 /*login api*/
-/*http post method*/
 server.post('/Login',(req,res)=>{
 	/*payload data email and password {email:'email',password:'password'}*/
 	sql.query("select count(rest_id) as data,convert(aes_decrypt(password,'quickreadscan'),char) as pass  from userlog where email=?",[req.body.email],(err1,ret1)=>{
